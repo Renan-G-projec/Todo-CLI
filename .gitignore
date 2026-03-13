@@ -1,0 +1,6 @@
+# Ad Maiorem Dei Gloriam!
+
+# Binaries
+bin/
+*.o
+*.so
