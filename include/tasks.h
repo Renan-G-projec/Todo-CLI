@@ -7,6 +7,9 @@
 #define TASKS_IN_POOL 16
 
 // Includes
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include <stdint.h>
 
 struct task {
@@ -21,7 +24,7 @@ struct taskPool {
 
 // Allocates the memory to handle the struct
 struct taskPool *createTaskPool(struct taskPool *head);
-void freeTaskPool(struct taskPool* taskPool);
+void deleteTaskPool(struct taskPool* head);
 
 void insertTask(struct taskPool *taskPoolHead, const char* text);
 void deleteTask(struct taskPool *taskPool, uint8_t index);
