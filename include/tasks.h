@@ -14,6 +14,7 @@
 
 struct task {
   char text[TASK_SIZE];
+  char completed;
 };
 
 struct taskPool {
@@ -28,5 +29,8 @@ void deleteTaskPool(struct taskPool* head);
 
 void insertTask(struct taskPool *taskPoolHead, const char* text);
 void deleteTask(struct taskPool *head, int index);
+void completeTask(struct taskPool *head, int index);
 
+// Auxiliary functions
+void getTPandIndex(struct taskPool *head, int index, struct taskPool **destTP, uint8_t *destIdx);
 #endif

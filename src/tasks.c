@@ -51,6 +51,27 @@ void insertTask(struct taskPool *taskPoolHead, const char *text) {
 }
 
 void deleteTask(struct taskPool *head, int index) { 
+  struct taskPool *taskTP = NULL;
+  uint8_t currentTaskIndex = 0;
+
+  getTPandIndex(head, index, &taskTP, &currentTaskIndex);
+
+  taskTP->numTasks--;
+  for (int i = currentTaskIndex; i < taskTP->numTasks; i++) {
+    taskTP->tasks[i] = taskTP->tasks[i + 1];
+  }  
+}
+
+void completeTask(struct taskPool *head, int index) {
+  struct taskPool *taskPool = NULL;
+  uint8_t taskIndexTP = 0;
+
+  getTPandIndex(head, index, &taskPool, &taskIndexTP);
+
+  taskPool->tasks[taskIndexTP].completed = 1;
+}
+
+void getTPandIndex(struct taskPool *head, int index, struct taskPool **destTP, uint8_t *destIdx) {
   struct taskPool *currentTP = head;
   int i = 0;
   uint8_t currentTaskIndex = 0;
@@ -68,8 +89,6 @@ void deleteTask(struct taskPool *head, int index) {
     i++;
   }
 
-  currentTP->numTasks--;
-  for (int i = currentTaskIndex; i < currentTP->numTasks; i++) {
-    currentTP->tasks[i] = currentTP->tasks[i + 1];
-  }  
+  *destTP = currentTP;
+  *destIdx = currentTaskIndex;
 }
