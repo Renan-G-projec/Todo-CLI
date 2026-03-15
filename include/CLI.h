@@ -10,17 +10,20 @@
 #include "tasks.h"
 
 enum ACTIONS {
+  LIST,
   CREATE,
   DELETE,
   HELP,
+  EXIT,
+  COMPLETE,
   INVALID_ACTION
 };
 
 void printTasks(struct taskPool *head);
-void takeAction(char *inputBuffer);
+void takeAction(char *inputBuffer, char *argument);
 
 enum ACTIONS breakAction(char *input);
 
-void processAction(enum ACTIONS action);
+void processAction(enum ACTIONS action, char *argumentBuffer, struct taskPool *head);
 
 #endif

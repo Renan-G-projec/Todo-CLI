@@ -4,16 +4,16 @@
 CC = gcc
 
 # Output
-OUT = bin/ToDoCLI
+OUT = bin/Todo
 
 # Inputs
-IN = src/linkedList.c
+IN = src/tasks.c src/CLI.c src/main.c
 
 # Include Directories
 PROJECTINCLUDES = -Iinclude
 
 # Warnings
-WARNS = -Wall -Wextra -Werror
+WARNS = # -Wall -Wextra -Werror
 
 # Tags
 all: prepareDirectories

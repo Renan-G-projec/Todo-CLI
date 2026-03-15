@@ -27,6 +27,6 @@ struct taskPool *createTaskPool(struct taskPool *head);
 void deleteTaskPool(struct taskPool* head);
 
 void insertTask(struct taskPool *taskPoolHead, const char* text);
-void deleteTask(struct taskPool *taskPool, uint8_t index);
+void deleteTask(struct taskPool *head, int index);
 
 #endif

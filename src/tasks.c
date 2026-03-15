@@ -50,9 +50,26 @@ void insertTask(struct taskPool *taskPoolHead, const char *text) {
   }
 }
 
-void deleteTask(struct taskPool *taskPool, uint8_t index) { 
-  while (index < TASKS_IN_POOL) {
-    taskPool->tasks[index] = taskPool->tasks[index + 1];
-    index++;
+void deleteTask(struct taskPool *head, int index) { 
+  struct taskPool *currentTP = head;
+  int i = 0;
+  uint8_t currentTaskIndex = 0;
+  while (i < index) {
+    if (currentTaskIndex >= currentTP->numTasks - 1) {
+      if (currentTP->next == NULL) {
+        return;
+      }
+
+      currentTP = currentTP->next;
+      currentTaskIndex = 0;
+    } else {
+      currentTaskIndex++;
+    }
+    i++;
   }
+
+  currentTP->numTasks--;
+  for (int i = currentTaskIndex; i < currentTP->numTasks; i++) {
+    currentTP->tasks[i] = currentTP->tasks[i + 1];
+  }  
 }
