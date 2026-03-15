@@ -2,6 +2,7 @@
 
 #include "CLI.h"
 #include "tasks.h"
+#include <stdio.h>
 
 void printTasks(struct taskPool *head) {
   struct taskPool *currentTP = head;
@@ -63,8 +64,11 @@ void processAction(enum ACTIONS action, char *argument, struct taskPool *head) {
     case CREATE:
       insertTask(head, argument);
       break;
-    case DELETE:
-      deleteTask(head, atoi(argument));
+    case DELETE: ;
+      int delSuccess = deleteTask(head, atoi(argument));
+      if (delSuccess == E_OUT_OF_RANGE) {
+        printf("Error: Out of range index.\n-------\n");
+      }
       break;
     case HELP:
       printf(
@@ -91,8 +95,11 @@ void processAction(enum ACTIONS action, char *argument, struct taskPool *head) {
         exit(0);
       }
       break;
-    case COMPLETE:
-      completeTask(head, atoi(argument));
+    case COMPLETE: ;
+      int completeSuccess = completeTask(head, atoi(argument));
+      if (completeSuccess == E_OUT_OF_RANGE) {
+        printf("Error: Out of range index.\n-------\n");
+      }
       break;
     case INVALID_ACTION:
       printf("Error: Invalid action. Type \"Help\" to view a list of available commands.\n-------\n");

@@ -2,6 +2,7 @@
 
 # Compiler
 CC = gcc
+DEBUGGER = valgrind
 
 # Output
 OUT = bin/Todo
@@ -18,6 +19,10 @@ WARNS = # -Wall -Wextra -Werror
 # Tags
 all: prepareDirectories
 	${CC} ${IN} -o ${OUT} ${WARNS} ${PROJECTINCLUDES}
+
+debug: prepareDirectories
+	${CC} -g ${IN} -o ${OUT} ${PROJECTINCLUDES}
+	${DEBUGGER} ${OUT} --track-origins=yes
 
 prepareDirectories:
 	mkdir -p bin

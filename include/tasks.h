@@ -6,6 +6,9 @@
 #define TASK_SIZE 256
 #define TASKS_IN_POOL 16
 
+// Errors
+#define E_OUT_OF_RANGE -1
+
 // Includes
 #include <stdio.h>
 #include <string.h>
@@ -28,9 +31,10 @@ struct taskPool *createTaskPool(struct taskPool *head);
 void deleteTaskPool(struct taskPool* head);
 
 void insertTask(struct taskPool *taskPoolHead, const char* text);
-void deleteTask(struct taskPool *head, int index);
-void completeTask(struct taskPool *head, int index);
+int deleteTask(struct taskPool *head, int index);
+int completeTask(struct taskPool *head, int index);
 
 // Auxiliary functions
-void getTPandIndex(struct taskPool *head, int index, struct taskPool **destTP, uint8_t *destIdx);
+int getTPandIndex(struct taskPool *head, int index, struct taskPool **destTP, uint8_t *destIdx);
+
 #endif

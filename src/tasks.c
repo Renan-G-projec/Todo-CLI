@@ -50,45 +50,44 @@ void insertTask(struct taskPool *taskPoolHead, const char *text) {
   }
 }
 
-void deleteTask(struct taskPool *head, int index) { 
+int deleteTask(struct taskPool *head, int index) { 
   struct taskPool *taskTP = NULL;
   uint8_t currentTaskIndex = 0;
 
-  getTPandIndex(head, index, &taskTP, &currentTaskIndex);
+  int tpIdxSucess = getTPandIndex(head, index, &taskTP, &currentTaskIndex);
+  if (tpIdxSucess != 0) return tpIdxSucess;
 
   taskTP->numTasks--;
   for (int i = currentTaskIndex; i < taskTP->numTasks; i++) {
     taskTP->tasks[i] = taskTP->tasks[i + 1];
-  }  
+  }
+  return 0;
 }
 
-void completeTask(struct taskPool *head, int index) {
+int completeTask(struct taskPool *head, int index) {
   struct taskPool *taskPool = NULL;
   uint8_t taskIndexTP = 0;
 
-  getTPandIndex(head, index, &taskPool, &taskIndexTP);
+  int tpIdxSuccess = getTPandIndex(head, index, &taskPool, &taskIndexTP);
+if (tpIdxSuccess != 0) return tpIdxSuccess;
 
   taskPool->tasks[taskIndexTP].completed = 1;
+  return 0;
 }
 
-void getTPandIndex(struct taskPool *head, int index, struct taskPool **destTP, uint8_t *destIdx) {
+int getTPandIndex(struct taskPool *head, int index, struct taskPool **destTP, uint8_t *destIdx) {
   struct taskPool *currentTP = head;
-  int i = 0;
-  uint8_t currentTaskIndex = 0;
-  while (i < index) {
-    if (currentTaskIndex >= currentTP->numTasks - 1) {
-      if (currentTP->next == NULL) {
-        return;
-      }
-
-      currentTP = currentTP->next;
-      currentTaskIndex = 0;
-    } else {
-      currentTaskIndex++;
+  while (index > currentTP->numTasks) {
+    index -= currentTP->numTasks;
+    currentTP = currentTP->next;
+    if (currentTP == NULL) {
+      return E_OUT_OF_RANGE;
     }
-    i++;
   }
 
+  if (currentTP->numTasks <= index) return E_OUT_OF_RANGE;
+
   *destTP = currentTP;
-  *destIdx = currentTaskIndex;
+  *destIdx = index;
+  return 0;
 }
