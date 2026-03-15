@@ -24,17 +24,16 @@ struct taskPool *createTaskPool(struct taskPool *head) {
 
 void deleteTaskPool(struct taskPool *head) {
   struct taskPool *delTP = head->next;
-  
+
   head->next = delTP->next;
   free(delTP);
 }
-
 
 void insertTask(struct taskPool *taskPoolHead, const char *text) {
   struct taskPool *currentTP = taskPoolHead;
   unsigned char inserted = 0;
 
-  while(!inserted) {
+  while (!inserted) {
     if (currentTP->numTasks >= TASKS_IN_POOL) {
       struct taskPool *nextTP = currentTP->next;
       if (nextTP == NULL) {
@@ -43,19 +42,21 @@ void insertTask(struct taskPool *taskPoolHead, const char *text) {
       currentTP = nextTP;
     } else {
       // Inserting the task in the taskPool;
-      memcpy(currentTP->tasks[currentTP->numTasks].text, text, strlen(text) + 1);
+      memcpy(currentTP->tasks[currentTP->numTasks].text, text,
+             strlen(text) + 1);
       currentTP->numTasks++;
       inserted = 1;
     }
   }
 }
 
-int deleteTask(struct taskPool *head, int index) { 
+int deleteTask(struct taskPool *head, int index) {
   struct taskPool *taskTP = NULL;
   uint8_t currentTaskIndex = 0;
 
   int tpIdxSucess = getTPandIndex(head, index, &taskTP, &currentTaskIndex);
-  if (tpIdxSucess != 0) return tpIdxSucess;
+  if (tpIdxSucess != 0)
+    return tpIdxSucess;
 
   taskTP->numTasks--;
   for (int i = currentTaskIndex; i < taskTP->numTasks; i++) {
@@ -69,13 +70,15 @@ int completeTask(struct taskPool *head, int index) {
   uint8_t taskIndexTP = 0;
 
   int tpIdxSuccess = getTPandIndex(head, index, &taskPool, &taskIndexTP);
-if (tpIdxSuccess != 0) return tpIdxSuccess;
+  if (tpIdxSuccess != 0)
+    return tpIdxSuccess;
 
   taskPool->tasks[taskIndexTP].completed = 1;
   return 0;
 }
 
-int getTPandIndex(struct taskPool *head, int index, struct taskPool **destTP, uint8_t *destIdx) {
+int getTPandIndex(struct taskPool *head, int index, struct taskPool **destTP,
+                  uint8_t *destIdx) {
   struct taskPool *currentTP = head;
   while (index > currentTP->numTasks) {
     index -= currentTP->numTasks;
@@ -85,7 +88,8 @@ int getTPandIndex(struct taskPool *head, int index, struct taskPool **destTP, ui
     }
   }
 
-  if (currentTP->numTasks <= index) return E_OUT_OF_RANGE;
+  if (currentTP->numTasks <= index)
+    return E_OUT_OF_RANGE;
 
   *destTP = currentTP;
   *destIdx = index;
