@@ -2,13 +2,20 @@
 
 #include "CLI.h"
 #include "tasks.h"
+
 void printTasks(struct taskPool *head) {
   struct taskPool *currentTP = head;
   int numTask = 0;
   
   while (currentTP != NULL) {
     for (int taskIndexTP = 0; taskIndexTP < currentTP->numTasks; taskIndexTP++) {
-      printf("%d. %s\n", numTask, currentTP->tasks[taskIndexTP].text);
+      char colorCode[] = "\033[0;00m";
+      if (currentTP->tasks[taskIndexTP].completed) {
+        // Green ANSI escape color code
+        colorCode[4] = '3';
+        colorCode[5] = '2';
+      }
+      printf("%s%d. %s\033[0m\n", colorCode, numTask, currentTP->tasks[taskIndexTP].text);
       numTask++;
     }
 
@@ -62,14 +69,18 @@ void processAction(enum ACTIONS action, char *argument, struct taskPool *head) {
     case HELP:
       printf(
         "Available commands:\n"
+                "  List - Lists all tasks.\n"
                 "  Create <task> - Creates a task and assing them a ID!\n"
                 "  Delete <taskId> - Deletes a task with the assingned ID.\n"
                 "  Help - Shows this message.\n"
+                "  Exit - Exits the program.\n"
+                "  Complete <taskId> - Marks a task as concluded.\n"
+                "-------\n"
       );
       break;
 
     case EXIT:
-      printf("Would you like to save the file?");
+      printf("Would you like to save the file? ");
       char saveInput;
       scanf(" %c", &saveInput);
 
@@ -79,8 +90,12 @@ void processAction(enum ACTIONS action, char *argument, struct taskPool *head) {
         // saveToDisk()
         exit(0);
       }
+      break;
+    case COMPLETE:
+      completeTask(head, atoi(argument));
+      break;
     case INVALID_ACTION:
-      printf("Error: Invalid action. Type \"Help\" to view a list of available commands.\n");
+      printf("Error: Invalid action. Type \"Help\" to view a list of available commands.\n-------\n");
       break;
   }
 }

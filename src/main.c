@@ -11,6 +11,7 @@ int main() {
   char argBuffer[RESPONSE_BUFF];
   while (1) {
     takeAction(inputBuff, argBuffer);
+    printf("-------\n");
 
     int action = breakAction(inputBuff);
     processAction(action, argBuffer, mainTP);
